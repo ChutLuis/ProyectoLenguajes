@@ -26,26 +26,20 @@ namespace ProyectoLenguajes
 
             ExpressionTree n1 = new ExpressionTree();
             n1.FirstStep("([A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|([CHR][(][0-9]+[)]))([\\.][\\.])?[+]?)+[\n]*)*");
+            Regex regex = new Regex("([\r\n]*[\\t]?[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[\r\n]*)*");
+            Regex tokens = new Regex("([\r\n]*[\t]*TOKEN[ ]*[0-9]+[ ]*[=][ ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[\r\n]*)*");
+            string valor = "	LETRA   = 'A'..'Z'+'a'..'z'+'_'";            
+            var matc = regex.Match(valor);
+
 
             using (var file = new FileStream(openFile.FileName,FileMode.Open))
             {
                 using (var reader = new StreamReader(file))
                 {
-                    string firstBlock = reader.ReadLine();
-                    firstBlock += "\n";
-                    while (firstBlock!= null)
-                    {
-                        if (IsAllUpper(firstBlock)&& firstBlock=="SETS")
-                        {
-
-                        }
-                        else if (IsAllUpper(firstBlock) && "SETS".Contains(firstBlock))
-                        {
-                            
-                        }
-                        firstBlock = reader.ReadLine();
-                        firstBlock += "\n";
-                    }
+                    string Texto = reader.ReadToEnd();
+                    var aux =  Between(Texto, "TOKENS", "ACTIONS");                    
+                    var match = tokens.Match(aux);
+                    
                 }
             }
         }
@@ -58,6 +52,25 @@ namespace ProyectoLenguajes
             }
 
             return true;
+        }
+        private string Between(string value, string a, string b)
+        {
+            int posA = value.IndexOf(a);
+            int posB = value.LastIndexOf(b);
+            if (posA == -1)
+            {
+                return "";
+            }
+            if (posB == -1)
+            {
+                return "";
+            }
+            int adjustedPosA = posA + a.Length;
+            if (adjustedPosA >= posB)
+            {
+                return "";
+            }
+            return value.Substring(adjustedPosA, posB - adjustedPosA);
         }
     }
 }
