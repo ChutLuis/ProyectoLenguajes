@@ -26,8 +26,9 @@ namespace ProyectoLenguajes
 
             ExpressionTree n1 = new ExpressionTree();
             n1.FirstStep("([A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|([CHR][(][0-9]+[)]))([\\.][\\.])?[+]?)+[\n]*)*");
-            Regex regex = new Regex("([\r\n]*[\\t]?[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[\r\n]*)*");
-            Regex tokens = new Regex("([\r\n]*[\t]*TOKEN[ ]*[0-9]+[ ]*[=][ ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[\r\n]*)*");
+            Regex regex = new Regex("([\r\n|\n]*[\\t]?[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[\r\n|\n]*)*");
+            Regex tokens = new Regex("([\r\n|\n|\t| ]*TOKEN[\t| ]*[0-9]+[\t| ]*[=][\t| ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[ |\r\n|\n|\t]*)*");
+            Regex actions = new Regex("(RESERVADAS[(][)][ ]*[\t]*[\r\n|\n]*([{][\r\n|\n]*([\t]*[ ]*[0-9]+[ ]*[=][ ]*(['][A-Z]+['])[\r\n|\n]*)+[\r\n|\n]*[}][\r\n|\n]*))");
             string valor = "	LETRA   = 'A'..'Z'+'a'..'z'+'_'";            
             var matc = regex.Match(valor);
 
@@ -37,8 +38,27 @@ namespace ProyectoLenguajes
                 using (var reader = new StreamReader(file))
                 {
                     string Texto = reader.ReadToEnd();
-                    var aux =  Between(Texto, "TOKENS", "ACTIONS");                    
-                    var match = tokens.Match(aux);
+                    if (Regex.IsMatch(Texto,"SETS"))
+                    {
+                        string inbetween = Between(Texto,"SETS","TOKENS");
+                        var matches = regex.Match(inbetween);
+                        if (matches.Success)
+                        {
+
+                        }
+                    }
+                    if (Regex.IsMatch(Texto,"TOKENS"))
+                    {
+
+                    }
+                    if (Regex.IsMatch(Texto,"ACTIONS"))
+                    {
+
+                    }
+                    if (Regex.IsMatch(Texto,"ERROR"))
+                    {
+
+                    }
                     
                 }
             }
