@@ -1,0 +1,9 @@
+C:\Users\luisc\Documents\Tareas 2020\Lenguajes Formales Y Automatas\ProyectoLenguajes\ProyectoLenguajes\bin\Debug\ProyectoLenguajes.exe.config
+C:\Users\luisc\Documents\Tareas 2020\Lenguajes Formales Y Automatas\ProyectoLenguajes\ProyectoLenguajes\bin\Debug\ProyectoLenguajes.exe
+C:\Users\luisc\Documents\Tareas 2020\Lenguajes Formales Y Automatas\ProyectoLenguajes\ProyectoLenguajes\bin\Debug\ProyectoLenguajes.pdb
+C:\Users\luisc\Documents\Tareas 2020\Lenguajes Formales Y Automatas\ProyectoLenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.csprojAssemblyReference.cache
+C:\Users\luisc\Documents\Tareas 2020\Lenguajes Formales Y Automatas\ProyectoLenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.Form1.resources
+C:\Users\luisc\Documents\Tareas 2020\Lenguajes Formales Y Automatas\ProyectoLenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.Properties.Resources.resources
+C:\Users\luisc\Documents\Tareas 2020\Lenguajes Formales Y Automatas\ProyectoLenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.csproj.GenerateResource.cache
+C:\Users\luisc\Documents\Tareas 2020\Lenguajes Formales Y Automatas\ProyectoLenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.exe
+C:\Users\luisc\Documents\Tareas 2020\Lenguajes Formales Y Automatas\ProyectoLenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.pdb
