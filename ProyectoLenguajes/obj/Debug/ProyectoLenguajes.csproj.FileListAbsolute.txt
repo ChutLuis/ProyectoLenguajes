@@ -16,3 +16,12 @@ C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\ProyectoLenguajes\obj\Debug\Pr
 C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.csproj.GenerateResource.cache
 C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.exe
 C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.pdb
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\bin\Debug\ProyectoLenguajes.exe.config
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\bin\Debug\ProyectoLenguajes.exe
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\bin\Debug\ProyectoLenguajes.pdb
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.csprojAssemblyReference.cache
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.Form1.resources
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.Properties.Resources.resources
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.csproj.GenerateResource.cache
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.exe
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\obj\Debug\ProyectoLenguajes.pdb

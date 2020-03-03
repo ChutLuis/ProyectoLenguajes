@@ -25,7 +25,7 @@ namespace ProyectoLenguajes
             openFile.ShowDialog();
 
             ExpressionTree n1 = new ExpressionTree();
-            n1.FirstStep("([0|1*]+[0]?|[1]+)#");
+            n1.FirstStep("([\r\n|\n]*[\t]?[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([.][.])?[+]?)+[\r\n|\n]*)*");
             Regex regex = new Regex("([\r\n|\n]*[\\t]?[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[\r\n|\n]*)*");
             Regex tokens = new Regex("([\r\n|\n|\t| ]*TOKEN[\t| ]*[0-9]+[\t| ]*[=][\t| ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[ |\r\n|\n|\t]*)*");
             Regex actions = new Regex("((RESERVADAS|[A-Z]+)[(][)][ ]*[\t]*[\r\n|\n]*([{][\r\n|\n]*([\t]*[ ]*[0-9]+[ ]*[=][ ]*(['][A-Z]+['])[\r\n|\n]*)+[\r\n|\n]*[}][\r\n|\n]*)*)");
