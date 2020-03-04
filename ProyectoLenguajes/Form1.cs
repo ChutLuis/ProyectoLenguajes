@@ -51,11 +51,17 @@ namespace ProyectoLenguajes
                         var matches = regex.Match(inbetween);
                         if (matches.Value.CompareTo("")!=0)
                         {
-                            if (matches.Value.EndsWith(".."))
+                            var aux = matches.Value.Replace("\r\n", string.Empty);
+                            if (aux.EndsWith(".."))
                             {
                                 mensaje += "Gramatica de los SETS ERRONEA";
                                 required = false;
                                 
+                            }
+                            else if (aux.EndsWith("+"))
+                            {
+                                mensaje += "Gramatica de los SETS ERRONEA";
+                                required = false;
                             }
                             else
                             {
