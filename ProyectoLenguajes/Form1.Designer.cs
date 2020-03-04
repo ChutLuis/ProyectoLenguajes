@@ -32,8 +32,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.MensajeGramatica = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.Expresiones = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // button1
@@ -64,15 +64,6 @@
             this.MensajeGramatica.Size = new System.Drawing.Size(365, 55);
             this.MensajeGramatica.TabIndex = 3;
             // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(33, 154);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(234, 31);
-            this.textBox2.TabIndex = 4;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -82,13 +73,21 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "Mensaje";
             // 
+            // Expresiones
+            // 
+            this.Expresiones.FormattingEnabled = true;
+            this.Expresiones.Location = new System.Drawing.Point(38, 175);
+            this.Expresiones.Name = "Expresiones";
+            this.Expresiones.Size = new System.Drawing.Size(750, 160);
+            this.Expresiones.TabIndex = 6;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.Expresiones);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.MensajeGramatica);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.button1);
@@ -105,8 +104,8 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox MensajeGramatica;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox Expresiones;
     }
 }
 

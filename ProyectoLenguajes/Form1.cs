@@ -25,15 +25,19 @@ namespace ProyectoLenguajes
             openFile.ShowDialog();
             string mensaje = "";
             bool required = true;
-            ExpressionTree n1 = new ExpressionTree();
-            n1.FirstStep("([\r\n|\n]*[\t]?[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([.][.])?[+]?)+[\r\n|\n]*)*");
+            ExpressionTree SETS = new ExpressionTree();
+            string recSet = SETS.FirstStep("([\r\n|\n]*[\t| ]*[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[\r\n|\n| |\t]*)+");
+            ExpressionTree TOKENS = new ExpressionTree();
+            string recTok = TOKENS.FirstStep("([\r\n|\n|\t| ]*TOKEN[\t| ]*[0-9]+[\t| ]*[=][\t| ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[ |\r\n|\n|\t]*)*");
+            ExpressionTree ACTIONS = new ExpressionTree();
+            string recAct = ACTIONS.FirstStep("((RESERVADAS|[A-Z]+)[(][)][ ]*[\t]*[\r\n|\n| ]*([{][\r\n|\n| ]*([\t]*[ ]*[0-9]+[ ]*[=][ ]*(['][A-Z]+['])[\r\n|\n| ]*)+[\r\n|\n| ]*[}][\r\n|\n| ]*)*)");
+            ExpressionTree ERROR = new ExpressionTree();
+            string recErr = ERROR.FirstStep("([\r\n|\n|\t| ]*ERROR[ ]*[=][ ]*[0-9]+[\r\n|\n|\t| ]*)*");
 
             Regex regex = new Regex("([\r\n|\n]*[\t| ]*[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[\r\n|\n| |\t]*)+");
             Regex tokens = new Regex("([\r\n|\n|\t| ]*TOKEN[\t| ]*[0-9]+[\t| ]*[=][\t| ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[ |\r\n|\n|\t]*)*");
             Regex actions = new Regex("((RESERVADAS|[A-Z]+)[(][)][ ]*[\t]*[\r\n|\n| ]*([{][\r\n|\n| ]*([\t]*[ ]*[0-9]+[ ]*[=][ ]*(['][A-Z]+['])[\r\n|\n| ]*)+[\r\n|\n| ]*[}][\r\n|\n| ]*)*)");
             Regex Error = new Regex("([\r\n|\n|\t| ]*ERROR[ ]*[=][ ]*[0-9]+[\r\n|\n|\t| ]*)*");
-            string valor = "	LETRA   = 'A'..'Z'+'a'..'z'+'_'";            
-            var matc = regex.Match(valor);
 
 
             using (var file = new FileStream(openFile.FileName,FileMode.Open))
@@ -128,7 +132,26 @@ namespace ProyectoLenguajes
 
                 }
             }
-            
+            List<string> ERtoAE = new List<string>();
+            ERtoAE.Add("Expresion Regular");
+            ERtoAE.Add("([\r\n|\n]*[\t| ]*[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[\r\n|\n| |\t]*)+");
+            ERtoAE.Add("Recorrido InOrder del Arbol de Expresion");
+            ERtoAE.Add(recSet);
+            ERtoAE.Add("Expresion Regular");
+            ERtoAE.Add("([\r\n|\n|\t| ]*TOKEN[\t| ]*[0-9]+[\t| ]*[=][\t| ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[ |\r\n|\n|\t]*)*");
+            ERtoAE.Add("Recorrido InOrder del Arbol de Expresion");
+            ERtoAE.Add(recTok);
+            ERtoAE.Add("Expresion Regular");
+            ERtoAE.Add("((RESERVADAS|[A-Z]+)[(][)][ ]*[\t]*[\r\n|\n| ]*([{][\r\n|\n| ]*([\t]*[ ]*[0-9]+[ ]*[=][ ]*(['][A-Z]+['])[\r\n|\n| ]*)+[\r\n|\n| ]*[}][\r\n|\n| ]*)*)");
+            ERtoAE.Add("Recorrido InOrder del Arbol de Expresion");
+            ERtoAE.Add(recAct);
+            ERtoAE.Add("Expresion Regular");
+            ERtoAE.Add("([\r\n|\n|\t| ]*ERROR[ ]*[=][ ]*[0-9]+[\r\n|\n|\t| ]*)*");
+            ERtoAE.Add("Recorrido InOrder del Arbol de Expresion");
+            ERtoAE.Add(recErr);
+
+
+            Expresiones.DataSource=ERtoAE;
         }
         private bool IsAllUpper(string input)
         {

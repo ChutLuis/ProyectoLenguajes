@@ -12,7 +12,7 @@ namespace ProyectoLenguajes
         Dictionary<string, int> Precedencias = new Dictionary<string, int>();
         string Recorrido = "";
         string operador, oper;
-        public void FirstStep(string RE)
+        public string FirstStep(string RE)
         {
             char[] tokens = RE.ToCharArray();            
             Precedencias.Add("*", 3);
@@ -197,6 +197,7 @@ namespace ProyectoLenguajes
             }
             //Recorrer Arbol
             RecorridoInorder(S.Pop());
+            return Recorrido;
         }
 
         public void  RecorridoInorder(Nodo<string> nodo)
