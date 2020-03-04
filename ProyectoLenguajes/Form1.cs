@@ -23,12 +23,15 @@ namespace ProyectoLenguajes
         {
             OpenFileDialog openFile = new OpenFileDialog();
             openFile.ShowDialog();
-
+            string mensaje = "";
+            bool required = true;
             ExpressionTree n1 = new ExpressionTree();
             n1.FirstStep("([\r\n|\n]*[\t]?[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([.][.])?[+]?)+[\r\n|\n]*)*");
-            Regex regex = new Regex("([\r\n|\n]*[\\t]?[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[\r\n|\n]*)*");
+
+            Regex regex = new Regex("([\r\n|\n]*[\t| ]*[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[\r\n|\n| |\t]*)+");
             Regex tokens = new Regex("([\r\n|\n|\t| ]*TOKEN[\t| ]*[0-9]+[\t| ]*[=][\t| ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[ |\r\n|\n|\t]*)*");
-            Regex actions = new Regex("((RESERVADAS|[A-Z]+)[(][)][ ]*[\t]*[\r\n|\n]*([{][\r\n|\n]*([\t]*[ ]*[0-9]+[ ]*[=][ ]*(['][A-Z]+['])[\r\n|\n]*)+[\r\n|\n]*[}][\r\n|\n]*)*)");
+            Regex actions = new Regex("((RESERVADAS|[A-Z]+)[(][)][ ]*[\t]*[\r\n|\n| ]*([{][\r\n|\n| ]*([\t]*[ ]*[0-9]+[ ]*[=][ ]*(['][A-Z]+['])[\r\n|\n| ]*)+[\r\n|\n| ]*[}][\r\n|\n| ]*)*)");
+            Regex Error = new Regex("([\r\n|\n|\t| ]*ERROR[ ]*[=][ ]*[0-9]+[\r\n|\n|\t| ]*)*");
             string valor = "	LETRA   = 'A'..'Z'+'a'..'z'+'_'";            
             var matc = regex.Match(valor);
 
@@ -42,44 +45,90 @@ namespace ProyectoLenguajes
                     {
                         string inbetween = Between(Texto,"SETS","TOKENS");
                         var matches = regex.Match(inbetween);
-                        if (matches.Success)
+                        if (matches.Value.CompareTo("")!=0)
                         {
-
+                            mensaje += "Gramatica de los SETS Aceptada ,";
+                        }
+                        else
+                        {
+                            mensaje += "Gramatica de los SETS ERRONEA";
+                            required = false;
                         }
                     }
                     else
                     {
-                        string Message = "No se encontro sets pero no es un error";
+                        mensaje += "No se encontro sets, ";
                     }
-                    if (Regex.IsMatch(Texto,"TOKENS"))
+                    if (Regex.IsMatch(Texto,"TOKENS")&&required==true)
                     {
                         string inbetween = Between(Texto, "TOKENS", "ACTIONS");
                         var matches = tokens.Match(inbetween);
-                        if (matches.Success)
+                        if (matches.Value.CompareTo("") != 0)
                         {
-
+                            mensaje += "Gramatica de los TOKENS Aceptada ,";
+                        }
+                        else
+                        {
+                            mensaje = "Gramatica de los TOKENS  Erronea";
+                            required = false;
                         }
                     }
-                    else
+                    else if(required==true)
                     {
-
+                        mensaje = "No se encontro TOKENS ";
+                        required = false;
                     }
-                    if (Regex.IsMatch(Texto,"ACTIONS"))
+                    if (Regex.IsMatch(Texto,"ACTIONS")&&required==true)
                     {
                         string inbetween = Between(Texto, "ACTIONS", "ERROR");
                         var matches = actions.Match(inbetween);
-                        if (matches.Success)
+                        if (matches.Value.CompareTo("") != 0)
+                        {                            
+                            if (matches.Value.Contains("RESERVADAS()"))
+                            {
+                                mensaje += "Gramatica de las ACTIONS Aceptada ,";
+                            }
+                            else
+                            {
+                                mensaje = "Gramatica de las ACTIONS ERRONEA, no contiene RESERVADAS ()";
+                                required = false;
+                            }
+                        }
+                        else
                         {
-
+                            mensaje = "Gramatica de las ACTIONS ERRONEA";
+                            required = false;
                         }
                     }
-                    if (Regex.IsMatch(Texto,"ERROR"))
+                    else if(required==true)
                     {
-                        
+                        mensaje = "No se encontro ACTIONS ";
+                        required = false;
                     }
-                    
+                    if (Regex.IsMatch(Texto,"ERROR")&&required==true)
+                    {
+                        string after = After(Texto, "}");                        
+                        var matches = Error.Match(after);
+                        if (matches.Value.CompareTo("") != 0)
+                        {
+                            mensaje += "Gramatica de los ERRORES Aceptada.";
+                        }
+                        else
+                        {
+                            mensaje = "Gramatica de los ERRRORES ERRONEA";                            
+                        }
+                    }
+                    else if(required==true)
+                    {
+                        mensaje = "No se encontro ERRORES ";                       
+                    }
+
+
+                    MensajeGramatica.Text = mensaje;
+
                 }
             }
+            
         }
         private bool IsAllUpper(string input)
         {
@@ -110,5 +159,30 @@ namespace ProyectoLenguajes
             }
             return value.Substring(adjustedPosA, posB - adjustedPosA);
         }
+        public  string After(string value, string a)
+        {
+            int posA = value.LastIndexOf(a);
+            if (posA == -1)
+            {
+                return "";
+            }
+            int adjustedPosA = posA + a.Length;
+            if (adjustedPosA >= value.Length)
+            {
+                return "";
+            }
+            return value.Substring(adjustedPosA);
+        }
+        public  string Before( string value, string a)
+        {
+            int posA = value.IndexOf(a);
+            if (posA == -1)
+            {
+                return "";
+            }
+            return value.Substring(0, posA);
+        }
+
+
     }
 }

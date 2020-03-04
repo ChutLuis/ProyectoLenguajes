@@ -43,7 +43,7 @@ namespace ProyectoLenguajes
                         }
                     }
                     T.Pop();
-                    if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()) && tokens[i + 1] !=')')
+                    if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()) && tokens[i + 1] !=')')//Concatenar si el siguiente no es operacion o cerradura
                     {
                         T.Push(".");
                     }
@@ -83,7 +83,7 @@ namespace ProyectoLenguajes
                         }
                         i++;
                     }
-                    if (tokenST.CompareTo("") != 0 && tokenST.CompareTo("]") != 0 && tokenST.CompareTo("|") != 0)
+                    if (tokenST.CompareTo("") != 0 && tokenST.CompareTo("]") != 0 && tokenST.CompareTo("|") != 0)//Concatenar
                     {
                         Nodo<string> NodoAux = new Nodo<string>();
                         NodoAux.Valor = tokenST;
@@ -102,7 +102,7 @@ namespace ProyectoLenguajes
                         }
                     }
                     T.Pop();
-                    if (i < tokens.Count() - 2 && (tokens[i + 1].Equals('[')|| tokens[i + 1].Equals('(')))
+                    if (i < tokens.Count() - 2 && (tokens[i + 1].Equals('[')|| tokens[i + 1].Equals('(')))//Concatenar
                     {
                         T.Push(".");
                     }
@@ -123,7 +123,7 @@ namespace ProyectoLenguajes
                         aux.Izquierda = popped;
                         S.Push(aux);
                     }
-                    if (i < tokens.Count() - 2 && (tokens[i + 1].CompareTo('|')!=0 && tokens[i + 1].CompareTo(')') != 0&& tokens[i + 1].CompareTo(']') != 0))
+                    if (i < tokens.Count() - 2 && (tokens[i + 1].CompareTo('|')!=0 && tokens[i + 1].CompareTo(')') != 0&& tokens[i + 1].CompareTo(']') != 0))//Concatenar el siguiente token si no es fin de parentesis o corchete o un simbolo
                     {
                         T.Push(".");
                     }
@@ -157,7 +157,7 @@ namespace ProyectoLenguajes
                         }
                         else
                         {
-                            while (tokens[i] != '?' && tokens[i] != '*' && tokens[i] != '+' && tokens[i] != '|' && tokens[i] != ']' && tokens[i] != '[' && tokens[i] != '(')
+                            while (tokens[i] != '?' && tokens[i] != '*' && tokens[i] != '+' && tokens[i] != '|' && tokens[i] != ']' && tokens[i] != '[' && tokens[i] != '(')//Para tomar tokens completos sin necesidad de validaciones innecesarias
                             {
                                 aux1 += tokens[i];
                                 i++;
@@ -184,7 +184,7 @@ namespace ProyectoLenguajes
                 }
             }
 
-            while (T.Count()>0)
+            while (T.Count()>0)//Ultimo While
             {
                 if (S.Count()>=2)
                 {
@@ -195,7 +195,7 @@ namespace ProyectoLenguajes
                     S.Push(temp);
                 }
             }
-
+            //Recorrer Arbol
             RecorridoInorder(S.Pop());
         }
 
