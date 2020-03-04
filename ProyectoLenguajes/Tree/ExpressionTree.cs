@@ -43,39 +43,53 @@ namespace ProyectoLenguajes
                         }
                     }
                     T.Pop();
-                    if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()))
+                    if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()) && tokens[i + 1] !=')')
                     {
                         T.Push(".");
                     }
                 }
                 else if (tokens[i].Equals('['))
-                {                    
-                    if (Precedencias.ContainsKey(tokens[i + 1].ToString()) || tokens[i + 1] == '(' || tokens[i + 1] == ')')
-                    {
-                        i++;
-                        Nodo<string> aux = new Nodo<string>();
-                        aux.Valor = tokens[i].ToString();
-                        S.Push(aux);
-                        if (tokens[i + 1] == ']')
-                        {
-                            i ++;
-                        }
-                    }
-                    if (i < tokens.Length - 2 && tokens[i + 2] ==']')
-                    {
-                        Nodo<string> aux = new Nodo<string>();
-                        aux.Valor = tokens[i+1].ToString();
-                        S.Push(aux);
-                        i += 2;
-                    }
-                    else
-                    {
-                        T.Push("[");
-                    }
-                    
-                }
-                else if (tokens[i].Equals(']'))
                 {
+                    T.Push(tokens[i].ToString());
+                    string tokenST = "";
+                    i++;
+                    while (tokens[i].CompareTo(']') != 0)
+                    {
+                        if (tokens[i].Equals('|'))
+                        {
+                            Nodo<string> NodoAux = new Nodo<string>();
+                            NodoAux.Valor = tokenST;
+                            tokenST = "";
+                            S.Push(NodoAux);
+                        }
+                        tokenST += tokens[i].ToString();
+                        if (tokenST.Equals("|"))
+                        {
+                            if (T.Count() > 0 && T.Peek().CompareTo("[") != 0 && Precedencias[tokenST] < Precedencias[T.Peek()])
+                            {
+                                string aux = T.Pop();
+                                Nodo<string> nodo = new Nodo<string>();
+                                nodo.Valor = aux;
+                                nodo.Derecha = S.Pop();
+                                nodo.Izquierda = S.Pop();
+                                S.Push(nodo);
+                                tokenST = "";
+                            }
+                            else
+                            {
+                                T.Push(tokenST);
+                                tokenST = "";
+                            }
+                        }
+                        i++;
+                    }
+                    if (tokenST.CompareTo("") != 0 && tokenST.CompareTo("]") != 0 && tokenST.CompareTo("|") != 0)
+                    {
+                        Nodo<string> NodoAux = new Nodo<string>();
+                        NodoAux.Valor = tokenST;
+                        tokenST = "";
+                        S.Push(NodoAux);
+                    }
                     while (T.Peek().CompareTo("[") != 0)
                     {
                         if (T.Count() > 0 && S.Count >= 2)
@@ -88,11 +102,13 @@ namespace ProyectoLenguajes
                         }
                     }
                     T.Pop();
-                    if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()))
+                    if (i < tokens.Count() - 2 && (tokens[i + 1].Equals('[')|| tokens[i + 1].Equals('(')))
                     {
                         T.Push(".");
                     }
-                }
+                
+
+                } 
                 else if (tokens[i].Equals('+') | tokens[i].Equals('*') | tokens[i].Equals('?'))
                 {
                     Nodo<string> aux = new Nodo<string>();
@@ -147,9 +163,12 @@ namespace ProyectoLenguajes
                                 i++;
                             }
                             i--;
-                        }                  
-                        
+                        }
 
+                        if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()))
+                        {
+                            T.Push(".");
+                        }
                         Nodo<string> aux = new Nodo<string>();
                         aux.Valor = aux1;
                         S.Push(aux);
