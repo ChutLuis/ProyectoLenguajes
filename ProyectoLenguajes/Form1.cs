@@ -34,7 +34,7 @@ namespace ProyectoLenguajes
             ExpressionTree ERROR = new ExpressionTree();
             string recErr = ERROR.FirstStep("([\r\n|\n|\t| ]*ERROR[ ]*[=][ ]*[0-9]+[\r\n|\n|\t| ]*)*");
 
-            Regex regex = new Regex("([\r\n|\n]*[\t| ]*[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[\r\n|\n| |\t]*)+");
+            Regex regex = new Regex("([\r\n|\n|\t| ]*[A-Z]+[ ]*[=][ ]*(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[ |\r\n|\n|\t]*)*");
             Regex tokens = new Regex("([\r\n|\n|\t| ]*TOKEN[\t| ]*[0-9]+[\t| ]*[=][\t| ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[ |\r\n|\n|\t]*)*");
             Regex actions = new Regex("((RESERVADAS|[A-Z]+)[(][)][ ]*[\t]*[\r\n|\n| ]*([{][\r\n|\n| ]*([\t]*[ ]*[0-9]+[ ]*[=][ ]*(['][A-Z]+['])[\r\n|\n| ]*)+[\r\n|\n| ]*[}][\r\n|\n| ]*)*)");
             Regex Error = new Regex("([\r\n|\n|\t| ]*ERROR[ ]*[=][ ]*[0-9]+[\r\n|\n|\t| ]*)*");
@@ -51,7 +51,16 @@ namespace ProyectoLenguajes
                         var matches = regex.Match(inbetween);
                         if (matches.Value.CompareTo("")!=0)
                         {
-                            mensaje += "Gramatica de los SETS Aceptada ,";
+                            if (matches.Value.EndsWith(".."))
+                            {
+                                mensaje += "Gramatica de los SETS ERRONEA";
+                                required = false;
+                                
+                            }
+                            else
+                            {
+                                mensaje += "Gramatica de los SETS Aceptada ,";
+                            }
                         }
                         else
                         {
