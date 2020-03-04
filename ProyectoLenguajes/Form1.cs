@@ -84,7 +84,47 @@ namespace ProyectoLenguajes
                         var matches = tokens.Match(inbetween);
                         if (matches.Value.CompareTo("") != 0)
                         {
-                            mensaje += "Gramatica de los TOKENS Aceptada ,";
+
+                            var aux = matches.Value.Replace("\r\n", string.Empty);
+                            var lmao = aux.ToCharArray();
+                            string aux2 = "";
+                            if (!aux.EndsWith("'")&& !aux.EndsWith("}")&& !aux.EndsWith("*")&& !aux.EndsWith("?")&&!aux.EndsWith("+")&& !aux.EndsWith(")"))
+                            {
+                                mensaje = "Gramatica de los TOKENS  Erronea";
+                                required = false;
+                            }
+                            for (int i = 0; i < lmao.Count(); i++)
+                            {
+                                if (lmao[i]=='(')
+                                {
+                                    bool salida = true;
+                                    while (salida)
+                                    {
+                                        if (lmao[i]==')')
+                                        {
+                                            salida = true;
+                                            required = true;
+                                        }
+                                        else if (aux2.Contains("TOKEN"))
+                                        {
+                                            salida = false;
+                                            required = false;
+                                            i = lmao.Count()-1;
+                                        }
+                                        aux2 += lmao[i];
+                                        i++;
+                                    }
+                                }
+                            }
+
+                            if (required==true)
+                            {
+                                mensaje += "Gramatica de los TOKENS Aceptada ,";
+                            }
+                            else
+                            {
+                                mensaje = "Gramatica de los TOKENS  Erronea";
+                            }
                         }
                         else
                         {
