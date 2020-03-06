@@ -88,30 +88,39 @@ namespace ProyectoLenguajes
                             var aux = matches.Value.Replace("\r\n", string.Empty);
                             var lmao = aux.ToCharArray();
                             string aux2 = "";
-                            if (!aux.EndsWith("'")&& !aux.EndsWith("}")&& !aux.EndsWith("*")&& !aux.EndsWith("?")&&!aux.EndsWith("+")&& !aux.EndsWith(")"))
+                            aux = aux.Trim();
+                            if (!aux.EndsWith("'") && !aux.EndsWith("}")&& !aux.EndsWith("*")&& !aux.EndsWith("?")&&!aux.EndsWith("+")&& !aux.EndsWith(")"))
                             {
                                 mensaje = "Gramatica de los TOKENS  Erronea";
                                 required = false;
                             }
                             for (int i = 0; i < lmao.Count(); i++)
                             {
-                                if (lmao[i]=='(')
+                                var cha = Convert.ToChar("'");
+                                if (lmao[i]=='('&& lmao[i+1]!=cha)
                                 {
                                     bool salida = true;
                                     while (salida)
                                     {
-                                        if (lmao[i]==')')
+                                        if (i<lmao.Count())
                                         {
-                                            salida = true;
-                                            required = true;
+                                            if (lmao[i] == ')')
+                                            {
+                                                salida = true;
+                                                required = true;
+                                            }
+                                            else if (aux2.Contains("TOKEN"))
+                                            {
+                                                salida = false;
+                                                required = false;
+                                                i = lmao.Count() - 1;
+                                            }
+                                            aux2 += lmao[i];
                                         }
-                                        else if (aux2.Contains("TOKEN"))
+                                        else
                                         {
                                             salida = false;
-                                            required = false;
-                                            i = lmao.Count()-1;
                                         }
-                                        aux2 += lmao[i];
                                         i++;
                                     }
                                 }
