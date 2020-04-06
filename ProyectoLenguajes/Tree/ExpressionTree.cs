@@ -151,13 +151,13 @@ namespace ProyectoLenguajes
                     if (tokens[i]!='#')
                     {
                         string aux1 = "";
-                        if (tokens[i+1] == '?' && tokens[i+1] == '*' && tokens[i+1] == '+' && tokens[i+1] == '|' && tokens[i+1] == ']' && tokens[i+1] == '[' && tokens[i+1] == '(')
+                        if (tokens[i+1] == '?' || tokens[i+1] == '*' || tokens[i+1] == '+' || tokens[i+1] == '|' || tokens[i+1] == ']' || tokens[i+1] == '[' || tokens[i+1] == '(' || tokens[i + 1] == ')')
                         {
                             aux1 += tokens[i];
                         }
                         else
                         {
-                            while (tokens[i] != '?' && tokens[i] != '*' && tokens[i] != '+' && tokens[i] != '|' && tokens[i] != ']' && tokens[i] != '[' && tokens[i] != '(')//Para tomar tokens completos sin necesidad de validaciones innecesarias
+                            while (tokens[i].CompareTo('?') != 0 && tokens[i].CompareTo('*') != 0 && tokens[i].CompareTo('+') != 0 && tokens[i].CompareTo('|') != 0 && tokens[i].CompareTo(']') != 0 && tokens[i].CompareTo('[') != 0 && tokens[i].CompareTo('(') != 0 && tokens[i].CompareTo(')') != 0)//Para tomar tokens completos sin necesidad de validaciones innecesarias
                             {
                                 aux1 += tokens[i];
                                 i++;
@@ -165,7 +165,7 @@ namespace ProyectoLenguajes
                             i--;
                         }
 
-                        if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()))
+                        if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()) && tokens[i+1].CompareTo(')') != 0)
                         {
                             T.Push(".");
                         }

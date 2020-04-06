@@ -25,8 +25,9 @@ namespace ProyectoLenguajes
             openFile.ShowDialog();
             string mensaje = "";
             bool required = true;
+            Dictionary<string,string> SetsVar = new Dictionary<string, string>();
             ExpressionTree SETS = new ExpressionTree();
-            string recSet = SETS.FirstStep("([\r\n|\n]*[\t| ]*[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[\r\n|\n| |\t]*)+");
+            string recSet = SETS.FirstStep("(a(a|b)*b)#");
             ExpressionTree TOKENS = new ExpressionTree();
             string recTok = TOKENS.FirstStep("([\r\n|\n|\t| ]*TOKEN[\t| ]*[0-9]+[\t| ]*[=][\t| ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[ |\r\n|\n|\t]*)*");
             ExpressionTree ACTIONS = new ExpressionTree();
@@ -66,6 +67,23 @@ namespace ProyectoLenguajes
                             else
                             {
                                 mensaje += "Gramatica de los SETS Aceptada ,";
+                                string[] stringSeparators = new string[] { "\r\n" };
+                                string[] lines = inbetween.Split(stringSeparators, StringSplitOptions.None);
+                                for (int i = 0; i < lines.Length; i++)
+                                {
+                                    lines[i] = lines[i].Trim('\t');
+                                }
+                                foreach (var item in lines)
+                                {
+                                    if (item!="")
+                                    {
+                                        var auxArray = item.Split('=');
+                                        var inserted = auxArray[0].Trim(' ');
+
+                                        
+
+                                    }
+                                }
                             }
                         }
                         else
@@ -82,10 +100,11 @@ namespace ProyectoLenguajes
                     {
                         string inbetween = Between(Texto, "TOKENS", "ACTIONS");
                         var matches = tokens.Match(inbetween);
+                        var aux = matches.Value.Replace("\r\n", string.Empty);
                         if (matches.Value.CompareTo("") != 0)
                         {
 
-                            var aux = matches.Value.Replace("\r\n", string.Empty);
+                            
                             var lmao = aux.ToCharArray();
                             string aux2 = "";
                             aux = aux.Trim();
@@ -129,6 +148,13 @@ namespace ProyectoLenguajes
                             if (required==true)
                             {
                                 mensaje += "Gramatica de los TOKENS Aceptada ,";
+                                string[] stringSeparators = new string[] { "\r\n" };
+                                string[] lines = inbetween.Split(stringSeparators, StringSplitOptions.None);
+                                for (int i = 0; i < lines.Length; i++)
+                                {
+                                    lines[i] = lines[i].Trim('\t');
+                                }
+                                int xd = 0;
                             }
                             else
                             {
