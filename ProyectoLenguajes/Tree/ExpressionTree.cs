@@ -146,6 +146,33 @@ namespace ProyectoLenguajes
                 {
                     T.Push(tokens[i].ToString());
                 }
+                else if (tokens[i].Equals(' '))
+                {
+                    if (i < tokens.Count() - 2 && tokens[i + 1].CompareTo('\'') != 0 && tokens[i - 1].CompareTo('\'') != 0)
+                    {
+                        if (i < tokens.Count() - 2 && Char.IsLetter(tokens[i-1]) && Char.IsLetter(tokens[i + 1]))// Ver si el espacio entre 2 variables o letras es igual a una concatenacion
+                        {
+                            T.Push(".");
+                        }
+                        else if (i < tokens.Count() - 2 && Precedencias.ContainsKey(tokens[i + 1].ToString()))
+                        {
+                            // no se hace nada por que ya esta la logica hecha en el arbol
+                        }
+                        else if (i < tokens.Count() - 2 && Char.IsLetter(tokens[i - 1]) && tokens[i + 1].Equals('('))
+                        {
+                            T.Push(".");
+                        }                        
+                    }
+                    else if (true)
+                    {
+
+                    }
+                    
+                    
+
+                        
+                    
+                }
                 else
                 {
                     if (tokens[i]!='#')
@@ -157,7 +184,7 @@ namespace ProyectoLenguajes
                         }
                         else
                         {
-                            while (tokens[i].CompareTo('?') != 0 && tokens[i].CompareTo('*') != 0 && tokens[i].CompareTo('+') != 0 && tokens[i].CompareTo('|') != 0 && tokens[i].CompareTo(']') != 0 && tokens[i].CompareTo('[') != 0 && tokens[i].CompareTo('(') != 0 && tokens[i].CompareTo(')') != 0)//Para tomar tokens completos sin necesidad de validaciones innecesarias
+                            while (tokens[i].CompareTo('?') != 0 && tokens[i].CompareTo('*') != 0 && tokens[i].CompareTo('+') != 0 && tokens[i].CompareTo('|') != 0 && tokens[i].CompareTo(']') != 0 && tokens[i].CompareTo('[') != 0 && tokens[i].CompareTo('(') != 0 && tokens[i].CompareTo(')') != 0 && tokens[i].CompareTo(' ') != 0)//Para tomar tokens completos sin necesidad de validaciones innecesarias
                             {
                                 aux1 += tokens[i];
                                 i++;
@@ -165,7 +192,7 @@ namespace ProyectoLenguajes
                             i--;
                         }
 
-                        if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()) && tokens[i+1].CompareTo(')') != 0)
+                        if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()) && tokens[i+1].CompareTo(')') != 0 && tokens[i + 1].CompareTo(' ') != 0)
                         {
                             T.Push(".");
                         }

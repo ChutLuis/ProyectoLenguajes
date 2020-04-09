@@ -23,9 +23,11 @@ namespace ProyectoLenguajes
         {
             OpenFileDialog openFile = new OpenFileDialog();
             openFile.ShowDialog();
+            
+
             string mensaje = "";
             bool required = true;
-            Dictionary<string,string> SetsVar = new Dictionary<string, string>();
+            Dictionary<string,string[]> SetsVar = new Dictionary<string, string[]>();
             ExpressionTree SETS = new ExpressionTree();
             string recSet = SETS.FirstStep("(a(a|b)*b)#");
             ExpressionTree TOKENS = new ExpressionTree();
@@ -39,6 +41,15 @@ namespace ProyectoLenguajes
             Regex tokens = new Regex("([\r\n|\n|\t| ]*TOKEN[\t| ]*[0-9]+[\t| ]*[=][\t| ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[ |\r\n|\n|\t]*)*");
             Regex actions = new Regex("((RESERVADAS|[A-Z]+)[(][)][ ]*[\t]*[\r\n|\n| ]*([{][\r\n|\n| ]*([\t]*[ ]*[0-9]+[ ]*[=][ ]*(['][A-Z]+['])[\r\n|\n| ]*)+[\r\n|\n| ]*[}][\r\n|\n| ]*)*)");
             Regex Error = new Regex("([\r\n|\n|\t| ]*ERROR[ ]*[=][ ]*[0-9]+[\r\n|\n|\t| ]*)*");
+
+
+
+            Dictionary<string, int> Precedencias = new Dictionary<string, int>();            
+            Precedencias.Add("*", 3);
+            Precedencias.Add("+", 3);
+            Precedencias.Add("?", 3);
+            Precedencias.Add(".", 2);
+            Precedencias.Add("|", 1);
 
 
             using (var file = new FileStream(openFile.FileName,FileMode.Open))
@@ -78,9 +89,18 @@ namespace ProyectoLenguajes
                                     if (item!="")
                                     {
                                         var auxArray = item.Split('=');
-                                        var inserted = auxArray[0].Trim(' ');
-
-                                        
+                                        var Variable = auxArray[0].Trim(new Char[] { ' ', '\t'});
+                                        var Valor = auxArray[1].Trim(new Char[] { ' ', '\t' });
+                                        string[] auxValor;
+                                        if (Valor.Contains("+"))
+                                        {
+                                            auxValor = Valor.Split('+');
+                                        }
+                                        else
+                                        {
+                                            auxValor = new string[]{Valor};
+                                        }
+                                        SetsVar.Add(Variable,auxValor);           
 
                                     }
                                 }
@@ -148,13 +168,42 @@ namespace ProyectoLenguajes
                             if (required==true)
                             {
                                 mensaje += "Gramatica de los TOKENS Aceptada ,";
-                                string[] stringSeparators = new string[] { "\r\n" };
+                                string[] stringSeparators = new string[] { "\r\n","\n" };
                                 string[] lines = inbetween.Split(stringSeparators, StringSplitOptions.None);
+                                string auxString = "";
                                 for (int i = 0; i < lines.Length; i++)
                                 {
                                     lines[i] = lines[i].Trim('\t');
                                 }
-                                int xd = 0;
+                                foreach (var item in lines)
+                                {
+                                    if (item != "")
+                                    {
+                                        if (item.Contains("="))
+                                        {
+                                            var auxArray = item.Split(new Char[] { '=' }, 2);
+                                            if (auxArray[0].Contains("TOKEN"))
+                                            {
+                                                var Variable = auxArray[0].Trim(new Char[] { ' ', '\t', '\n' });
+                                                var Valor = auxArray[1].Trim(new Char[] { ' ', '\t', '\n' });
+                                                if (Valor.Contains("{ RESERVADAS() }"))
+                                                {
+                                                    Valor = Valor.Replace("{ RESERVADAS() }", "");
+                                                }
+                                                auxString += Valor;
+                                                auxString += "|";
+                                            }
+                                        }
+                                    }
+                                }
+                                if (auxString.EndsWith("|"))
+                                {
+                                    auxString = auxString.Remove(auxString.Length - 1);
+                                    auxString = auxString.Trim(new Char[] { ' ', '\t' });
+                                }
+                                auxString = "(" + auxString + ")#";
+                                ExpressionTree tokensExpression = new ExpressionTree();
+                                tokensExpression.FirstStep(auxString);
                             }
                             else
                             {
