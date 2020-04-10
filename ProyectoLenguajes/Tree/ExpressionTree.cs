@@ -43,7 +43,7 @@ namespace ProyectoLenguajes
                         }
                     }
                     T.Pop();
-                    if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()) && tokens[i + 1] !=')')//Concatenar si el siguiente no es operacion o cerradura
+                    if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()) && tokens[i + 1] != ')')//Concatenar si el siguiente no es operacion o cerradura
                     {
                         T.Push(".");
                     }
@@ -102,13 +102,13 @@ namespace ProyectoLenguajes
                         }
                     }
                     T.Pop();
-                    if (i < tokens.Count() - 2 && (tokens[i + 1].Equals('[')|| tokens[i + 1].Equals('(')))//Concatenar
+                    if (i < tokens.Count() - 2 && (tokens[i + 1].Equals('[') || tokens[i + 1].Equals('(')))//Concatenar
                     {
                         T.Push(".");
                     }
-                
 
-                } 
+
+                }
                 else if (tokens[i].Equals('+') | tokens[i].Equals('*') | tokens[i].Equals('?'))
                 {
                     Nodo<string> aux = new Nodo<string>();
@@ -123,15 +123,15 @@ namespace ProyectoLenguajes
                         aux.Izquierda = popped;
                         S.Push(aux);
                     }
-                    if (i < tokens.Count() - 2 && (tokens[i + 1].CompareTo('|')!=0 && tokens[i + 1].CompareTo(')') != 0&& tokens[i + 1].CompareTo(']') != 0))//Concatenar el siguiente token si no es fin de parentesis o corchete o un simbolo
+                    if (i < tokens.Count() - 2 && (tokens[i + 1].CompareTo('|') != 0 && tokens[i + 1].CompareTo(')') != 0 && tokens[i + 1].CompareTo(']') != 0))//Concatenar el siguiente token si no es fin de parentesis o corchete o un simbolo
                     {
                         T.Push(".");
                     }
                 }
-                else if (T.Count() > 0 && T.Peek().CompareTo("(")  != 0 && T.Peek().CompareTo("[")!=0 && Precedencias.ContainsKey(tokens[i].ToString()))
+                else if (T.Count() > 0 && T.Peek().CompareTo("(") != 0 && T.Peek().CompareTo("[") != 0 && Precedencias.ContainsKey(tokens[i].ToString()))
                 {
-                    if(Precedencias[tokens[i].ToString()] < Precedencias[T.Peek()])
-                    {                        
+                    if (Precedencias[tokens[i].ToString()] < Precedencias[T.Peek()])
+                    {
                         string aux = T.Pop();
                         Nodo<string> nodo = new Nodo<string>();
                         nodo.Valor = aux;
@@ -150,7 +150,7 @@ namespace ProyectoLenguajes
                 {
                     if (i < tokens.Count() - 2 && tokens[i + 1].CompareTo('\'') != 0 && tokens[i - 1].CompareTo('\'') != 0)
                     {
-                        if (i < tokens.Count() - 2 && Char.IsLetter(tokens[i-1]) && Char.IsLetter(tokens[i + 1]))// Ver si el espacio entre 2 variables o letras es igual a una concatenacion
+                        if (i < tokens.Count() - 2 && Char.IsLetter(tokens[i - 1]) && Char.IsLetter(tokens[i + 1]))// Ver si el espacio entre 2 variables o letras es igual a una concatenacion
                         {
                             T.Push(".");
                         }
@@ -161,12 +161,23 @@ namespace ProyectoLenguajes
                         else if (i < tokens.Count() - 2 && Char.IsLetter(tokens[i - 1]) && tokens[i + 1].Equals('('))
                         {
                             T.Push(".");
-                        }                        
+                        }
                     }
-                    else if (true)
+                    else if (i < tokens.Count() - 2 && tokens[i - 1].CompareTo('\'') == 0 && Char.IsLetter(tokens[i+1]))
+                    {
+                        T.Push(".");
+                    }
+                    else if (i < tokens.Count() - 2 && tokens[i +1].CompareTo('\'') == 0 && Char.IsLetter(tokens[i - 1]))
+                    {
+                        T.Push(".");
+                    }
+                    else if (i < tokens.Count() - 2 && tokens[i + 1].CompareTo("'") == 0 && tokens[i - 1].CompareTo("'") == 0)
                     {
 
                     }
+                    
+
+                    
                     
                     
 
