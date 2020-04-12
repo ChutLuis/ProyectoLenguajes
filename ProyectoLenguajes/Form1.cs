@@ -28,14 +28,14 @@ namespace ProyectoLenguajes
             string mensaje = "";
             bool required = true;
             Dictionary<string,string[]> SetsVar = new Dictionary<string, string[]>();
-            ExpressionTree SETS = new ExpressionTree();
-            string recSet = SETS.FirstStep("(a(a|b)*b)#");
-            ExpressionTree TOKENS = new ExpressionTree();
-            string recTok = TOKENS.FirstStep("([\r\n|\n|\t| ]*TOKEN[\t| ]*[0-9]+[\t| ]*[=][\t| ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[ |\r\n|\n|\t]*)*");
-            ExpressionTree ACTIONS = new ExpressionTree();
-            string recAct = ACTIONS.FirstStep("((RESERVADAS|[A-Z]+)[(][)][ ]*[\t]*[\r\n|\n| ]*([{][\r\n|\n| ]*([\t]*[ ]*[0-9]+[ ]*[=][ ]*(['][A-Z]+['])[\r\n|\n| ]*)+[\r\n|\n| ]*[}][\r\n|\n| ]*)*)");
-            ExpressionTree ERROR = new ExpressionTree();
-            string recErr = ERROR.FirstStep("([\r\n|\n|\t| ]*ERROR[ ]*[=][ ]*[0-9]+[\r\n|\n|\t| ]*)*");
+            //ExpressionTree SETS = new ExpressionTree();
+            //string recSet = SETS.FirstStep("(a(a|b)*b)#");
+            //ExpressionTree TOKENS = new ExpressionTree();
+            //string recTok = TOKENS.FirstStep("(([\r\n|\n|\t| ]*TOKEN[\t| ]*[0-9]+[\t| ]*[=][\t| ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[ |\r\n|\n|\t]*)*)#");
+            //ExpressionTree ACTIONS = new ExpressionTree();
+            //string recAct = ACTIONS.FirstStep("((RESERVADAS|[A-Z]+)[(][)][ ]*[\t]*[\r\n|\n| ]*([{][\r\n|\n| ]*([\t]*[ ]*[0-9]+[ ]*[=][ ]*(['][A-Z]+['])[\r\n|\n| ]*)+[\r\n|\n| ]*[}][\r\n|\n| ]*)*)#");
+            //ExpressionTree ERROR = new ExpressionTree();
+            //string recErr = ERROR.FirstStep("(([\r\n|\n|\t| ]*ERROR[ ]*[=][ ]*[0-9]+[\r\n|\n|\t| ]*)*)#");
 
             Regex regex = new Regex("([\r\n|\n|\t| ]*[A-Z]+[ ]*[=][ ]*(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[ |\r\n|\n|\t]*)*");
             Regex tokens = new Regex("([\r\n|\n|\t| ]*TOKEN[\t| ]*[0-9]+[\t| ]*[=][\t| ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[ |\r\n|\n|\t]*)*");
@@ -173,7 +173,7 @@ namespace ProyectoLenguajes
                                 string auxString = "";
                                 for (int i = 0; i < lines.Length; i++)
                                 {
-                                    lines[i] = lines[i].Trim('\t');
+                                    lines[i] = lines[i].Replace("\t", string.Empty);
                                 }
                                 foreach (var item in lines)
                                 {
@@ -272,22 +272,22 @@ namespace ProyectoLenguajes
                 }
             }
             List<string> ERtoAE = new List<string>();
-            ERtoAE.Add("Expresion Regular");
-            ERtoAE.Add("([\r\n|\n]*[\t| ]*[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[\r\n|\n| |\t]*)+");
-            ERtoAE.Add("Recorrido InOrder del Arbol de Expresion");
-            ERtoAE.Add(recSet);
-            ERtoAE.Add("Expresion Regular");
-            ERtoAE.Add("([\r\n|\n|\t| ]*TOKEN[\t| ]*[0-9]+[\t| ]*[=][\t| ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[ |\r\n|\n|\t]*)*");
-            ERtoAE.Add("Recorrido InOrder del Arbol de Expresion");
-            ERtoAE.Add(recTok);
-            ERtoAE.Add("Expresion Regular");
-            ERtoAE.Add("((RESERVADAS|[A-Z]+)[(][)][ ]*[\t]*[\r\n|\n| ]*([{][\r\n|\n| ]*([\t]*[ ]*[0-9]+[ ]*[=][ ]*(['][A-Z]+['])[\r\n|\n| ]*)+[\r\n|\n| ]*[}][\r\n|\n| ]*)*)");
-            ERtoAE.Add("Recorrido InOrder del Arbol de Expresion");
-            ERtoAE.Add(recAct);
-            ERtoAE.Add("Expresion Regular");
-            ERtoAE.Add("([\r\n|\n|\t| ]*ERROR[ ]*[=][ ]*[0-9]+[\r\n|\n|\t| ]*)*");
-            ERtoAE.Add("Recorrido InOrder del Arbol de Expresion");
-            ERtoAE.Add(recErr);
+            //ERtoAE.Add("Expresion Regular");
+            //ERtoAE.Add("([\r\n|\n]*[\t| ]*[A-Z]+[ ]+[=][ ]+(((['][A-Z|0-9|a-z|_]['])|(CHR[(][0-9]+[)]))([\\.][\\.])?[+]?)+[\r\n|\n| |\t]*)+");
+            //ERtoAE.Add("Recorrido InOrder del Arbol de Expresion");
+            //ERtoAE.Add(recSet);
+            //ERtoAE.Add("Expresion Regular");
+            //ERtoAE.Add("([\r\n|\n|\t| ]*TOKEN[\t| ]*[0-9]+[\t| ]*[=][\t| ]*((([(|\\{]?[A-Z|a-z|0-9| ]+[()]?[)|\\}]?)|(['].[']))+[\\*|\\+|\\?|\\|]*)+[ |\r\n|\n|\t]*)*");
+            //ERtoAE.Add("Recorrido InOrder del Arbol de Expresion");
+            //ERtoAE.Add(recTok);
+            //ERtoAE.Add("Expresion Regular");
+            //ERtoAE.Add("((RESERVADAS|[A-Z]+)[(][)][ ]*[\t]*[\r\n|\n| ]*([{][\r\n|\n| ]*([\t]*[ ]*[0-9]+[ ]*[=][ ]*(['][A-Z]+['])[\r\n|\n| ]*)+[\r\n|\n| ]*[}][\r\n|\n| ]*)*)");
+            //ERtoAE.Add("Recorrido InOrder del Arbol de Expresion");
+            //ERtoAE.Add(recAct);
+            //ERtoAE.Add("Expresion Regular");
+            //ERtoAE.Add("([\r\n|\n|\t| ]*ERROR[ ]*[=][ ]*[0-9]+[\r\n|\n|\t| ]*)*");
+            //ERtoAE.Add("Recorrido InOrder del Arbol de Expresion");
+            //ERtoAE.Add(recErr);
 
 
             Expresiones.DataSource=ERtoAE;

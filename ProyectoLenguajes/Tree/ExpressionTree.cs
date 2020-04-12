@@ -12,6 +12,7 @@ namespace ProyectoLenguajes
         Dictionary<string, int> Precedencias = new Dictionary<string, int>();
         string Recorrido = "";
         string operador, oper;
+        int posicionAux = 1;
         public string FirstStep(string RE)
         {
             char[] tokens = RE.ToCharArray();            
@@ -45,7 +46,8 @@ namespace ProyectoLenguajes
                     T.Pop();
                     if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()) && tokens[i + 1] != ')')//Concatenar si el siguiente no es operacion o cerradura
                     {
-                        T.Push(".");
+                        tokens[i] = '.';
+                        i--;
                     }
                 }
                 else if (tokens[i].Equals('['))
@@ -104,7 +106,8 @@ namespace ProyectoLenguajes
                     T.Pop();
                     if (i < tokens.Count() - 2 && (tokens[i + 1].Equals('[') || tokens[i + 1].Equals('(')))//Concatenar
                     {
-                        T.Push(".");
+                        tokens[i] = '.';
+                        i--;
                     }
 
 
@@ -125,12 +128,13 @@ namespace ProyectoLenguajes
                     }
                     if (i < tokens.Count() - 2 && (tokens[i + 1].CompareTo('|') != 0 && tokens[i + 1].CompareTo(')') != 0 && tokens[i + 1].CompareTo(']') != 0))//Concatenar el siguiente token si no es fin de parentesis o corchete o un simbolo
                     {
-                        T.Push(".");
+                        tokens[i] = '.';
+                        i--;
                     }
                 }
-                else if (T.Count() > 0 && T.Peek().CompareTo("(") != 0 && T.Peek().CompareTo("[") != 0 && Precedencias.ContainsKey(tokens[i].ToString()))
+                else if (T.Count() > 0 && T.Peek().CompareTo("(") != 0 && T.Peek().CompareTo("[") != 0 && Precedencias.ContainsKey(tokens[i].ToString()) && (Precedencias[tokens[i].ToString()] <= Precedencias[T.Peek()]))
                 {
-                    if (Precedencias[tokens[i].ToString()] < Precedencias[T.Peek()])
+                    if (S.Count>=2)
                     {
                         string aux = T.Pop();
                         Nodo<string> nodo = new Nodo<string>();
@@ -140,9 +144,13 @@ namespace ProyectoLenguajes
                         S.Push(nodo);
                         T.Push(tokens[i].ToString());
                     }
+                    else
+                    {
+                        T.Push(tokens[i].ToString());
+                    }
 
                 }
-                else if (tokens[i].Equals('|'))
+                else if (Precedencias.ContainsKey(tokens[i].ToString()))
                 {
                     T.Push(tokens[i].ToString());
                 }
@@ -152,7 +160,8 @@ namespace ProyectoLenguajes
                     {
                         if (i < tokens.Count() - 2 && Char.IsLetter(tokens[i - 1]) && Char.IsLetter(tokens[i + 1]))// Ver si el espacio entre 2 variables o letras es igual a una concatenacion
                         {
-                            T.Push(".");
+                            tokens[i] = '.';
+                            i--;
                         }
                         else if (i < tokens.Count() - 2 && Precedencias.ContainsKey(tokens[i + 1].ToString()))
                         {
@@ -160,56 +169,107 @@ namespace ProyectoLenguajes
                         }
                         else if (i < tokens.Count() - 2 && Char.IsLetter(tokens[i - 1]) && tokens[i + 1].Equals('('))
                         {
-                            T.Push(".");
+                            tokens[i] = '.';
+                            i--;
+                        }
+                        else if (i < tokens.Count() - 2 && tokens[i + 1].CompareTo(' ') == 0)
+                        {
+                            bool isLetterBehind = false;
+                            bool isComillaBehind = false;
+                            if (Char.IsLetter(tokens[i-1]))
+                            {
+                                isLetterBehind = true;
+                            }
+                            else if (tokens[i-1].Equals('\''))
+                            {
+                                isComillaBehind = true;
+                            }
+                            while (i<tokens.Length - 1 && tokens[i].CompareTo(' ')==0)
+                            {
+                                i++;
+                            }
+
+                            if ((isComillaBehind||isLetterBehind)&&Char.IsLetter(tokens[i]))
+                            {
+                                tokens[i-1] = '.';                                
+                                
+                            }
+                            else if (tokens[i].CompareTo('(')==0&&isLetterBehind==true)
+                            {
+                                tokens[i-1] = '.';
+                            }                            
+                            else
+                            {
+                                //Se asume que es un caracter especial y la logica esta hecha en el arbol.
+                            }
+                            i-=2;
                         }
                     }
                     else if (i < tokens.Count() - 2 && tokens[i - 1].CompareTo('\'') == 0 && Char.IsLetter(tokens[i+1]))
                     {
-                        T.Push(".");
+                        tokens[i] = '.';
+                        i--;
                     }
                     else if (i < tokens.Count() - 2 && tokens[i +1].CompareTo('\'') == 0 && Char.IsLetter(tokens[i - 1]))
                     {
-                        T.Push(".");
-                    }
-                    else if (i < tokens.Count() - 2 && tokens[i + 1].CompareTo("'") == 0 && tokens[i - 1].CompareTo("'") == 0)
-                    {
-
+                        tokens[i] = '.';
+                        i--;
                     }
                     
-
-                    
-                    
-                    
-
-                        
                     
                 }
                 else
                 {
                     if (tokens[i]!='#')
                     {
-                        string aux1 = "";
-                        if (tokens[i+1] == '?' || tokens[i+1] == '*' || tokens[i+1] == '+' || tokens[i+1] == '|' || tokens[i+1] == ']' || tokens[i+1] == '[' || tokens[i+1] == '(' || tokens[i + 1] == ')')
+                        if (tokens[i].Equals('\''))
                         {
-                            aux1 += tokens[i];
+                            string auxTokenComilla = "";
+                            auxTokenComilla += tokens[i];
+                            i++;
+                            if (tokens[i+1].Equals('\''))
+                            {
+                                auxTokenComilla += tokens[i];
+                                i++;
+                                auxTokenComilla += tokens[i];
+                            }
+
+                            if (tokens[i + 1].Equals('\''))
+                            {
+                                tokens[i] = '.';
+                                i--;
+                            }
+                            Nodo<string> aux = new Nodo<string>();
+                            aux.Valor = auxTokenComilla;
+                            S.Push(aux);
+
                         }
                         else
                         {
-                            while (tokens[i].CompareTo('?') != 0 && tokens[i].CompareTo('*') != 0 && tokens[i].CompareTo('+') != 0 && tokens[i].CompareTo('|') != 0 && tokens[i].CompareTo(']') != 0 && tokens[i].CompareTo('[') != 0 && tokens[i].CompareTo('(') != 0 && tokens[i].CompareTo(')') != 0 && tokens[i].CompareTo(' ') != 0)//Para tomar tokens completos sin necesidad de validaciones innecesarias
+                            string aux1 = "";
+                            if (tokens[i + 1] == '?' || tokens[i + 1] == '*' || tokens[i + 1] == '+' || tokens[i + 1] == '|' || tokens[i + 1] == ']' || tokens[i + 1] == '[' || tokens[i + 1] == '(' || tokens[i + 1] == ')')
                             {
                                 aux1 += tokens[i];
-                                i++;
                             }
-                            i--;
-                        }
+                            else
+                            {
+                                while (tokens[i].CompareTo('?') != 0 && tokens[i].CompareTo('*') != 0 && tokens[i].CompareTo('+') != 0 && tokens[i].CompareTo('|') != 0 && tokens[i].CompareTo(']') != 0 && tokens[i].CompareTo('[') != 0 && tokens[i].CompareTo('(') != 0 && tokens[i].CompareTo(')') != 0 && tokens[i].CompareTo(' ') != 0 && tokens[i].CompareTo('.') != 0)//Para tomar tokens completos sin necesidad de validaciones innecesarias
+                                {
+                                    aux1 += tokens[i];
+                                    i++;
+                                }
+                                i--;
+                            }
 
-                        if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()) && tokens[i+1].CompareTo(')') != 0 && tokens[i + 1].CompareTo(' ') != 0)
-                        {
-                            T.Push(".");
+                            if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()) && tokens[i + 1].CompareTo(')') != 0 && tokens[i + 1].CompareTo(' ') != 0)
+                            {
+                                tokens[i] = '.';
+                                i--;
+                            }
+                            Nodo<string> aux = new Nodo<string>();
+                            aux.Valor = aux1;
+                            S.Push(aux);
                         }
-                        Nodo<string> aux = new Nodo<string>();
-                        aux.Valor = aux1;
-                        S.Push(aux);
                     }
                     else
                     {
@@ -234,9 +294,107 @@ namespace ProyectoLenguajes
                 }
             }
             //Recorrer Arbol
-            RecorridoInorder(S.Pop());
+            FirstLastLeafs(S.Peek());
+            RecorridoInorder(S.Peek());
+
+
+
+
             return Recorrido;
         }
+
+        public void FirstLastLeafs(Nodo<string> nodo)
+        {
+            if (nodo.Izquierda != null)
+            {
+                FirstLastLeafs(nodo.Izquierda);
+
+            }
+            if (nodo.Derecha != null)
+            {
+                FirstLastLeafs(nodo.Derecha);
+            }
+            if (nodo.Derecha == null && nodo.Izquierda == null)
+            {
+                nodo.Posicion = posicionAux;
+                List<int> aux = new List<int>();
+                aux.Add(posicionAux);
+                nodo.First = aux;
+                nodo.Last = aux;
+                posicionAux++;
+            }
+            else
+            {
+                switch (nodo.Valor)
+                {
+                    case "*":
+                        nodo.Nullable = true;                        
+                        nodo.First = nodo.Izquierda.First;                        
+                        nodo.Last = nodo.Izquierda.Last;
+                        break;
+                    case "+":
+                        nodo.Nullable = false;
+                        nodo.First = nodo.Izquierda.First;
+                        nodo.Last = nodo.Izquierda.Last;
+                        break;
+                    case "?":
+                        nodo.Nullable = true;
+                        nodo.First = nodo.Izquierda.First;
+                        nodo.Last = nodo.Izquierda.Last;
+                        break;
+                    case ".":
+                        if (nodo.Izquierda.Nullable&&nodo.Derecha.Nullable)
+                        {
+                            nodo.Nullable = true;
+                        }
+                        else
+                        {
+                            nodo.Nullable = false;
+                        }
+                        if (nodo.Izquierda.Nullable)
+                        {                            
+                            var FirstVarConcat = nodo.Izquierda.First.Union(nodo.Derecha.First);
+                            nodo.First = FirstVarConcat.ToList();
+                        }
+                        else
+                        {
+                            nodo.First = nodo.Izquierda.First;
+                        }
+
+                        if (nodo.Derecha.Nullable)
+                        {
+                            var LastVarConcat = nodo.Izquierda.Last.Union(nodo.Derecha.Last);
+                            nodo.Last = LastVarConcat.ToList();
+                        }
+                        else
+                        {
+                            nodo.Last = nodo.Derecha.Last;
+                        }
+                        break;
+                    case "|":
+                        if (nodo.Izquierda.Nullable||nodo.Derecha.Nullable)
+                        {
+                            nodo.Nullable = true;
+                        }
+                        else
+                        {
+                            nodo.Nullable = false;
+                        }
+                        var FirstVarOr = nodo.Izquierda.First.Union(nodo.Derecha.First);
+                        nodo.First = FirstVarOr.ToList();
+                        var LastVarOr = nodo.Izquierda.Last.Union(nodo.Derecha.Last);
+                        nodo.Last = LastVarOr.ToList();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+
+
+
+
 
         public void  RecorridoInorder(Nodo<string> nodo)
         {
@@ -251,7 +409,11 @@ namespace ProyectoLenguajes
                 RecorridoInorder(nodo.Derecha);
             }
             
+
         }
+
+
+
 
     }
 }

@@ -13,5 +13,7 @@ namespace ProyectoLenguajes.Tree
         public T Valor { get; set; }
         public List<int> First = new List<int>();
         public List<int> Last = new List<int>();
+        public bool Nullable;
+        public int Posicion;
     }
 }
