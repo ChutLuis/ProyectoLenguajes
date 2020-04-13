@@ -80,22 +80,48 @@ namespace ProyectoLenguajes
                                     }
                                     foreach (var item in lines)
                                     {
-                                        if (item != "")
+                                        var itemreplaced = item.Replace(" ",string.Empty);
+                                        if (itemreplaced=="")
                                         {
-                                            var auxArray = item.Split('=');
-                                            var Variable = auxArray[0].Trim(new Char[] { ' ', '\t' });
-                                            var Valor = auxArray[1].Trim(new Char[] { ' ', '\t' });
-                                            string[] auxValor;
-                                            if (Valor.Contains("+"))
+                                            if (itemreplaced != "")
                                             {
-                                                auxValor = Valor.Split('+');
-                                            }
-                                            else
-                                            {
-                                                auxValor = new string[] { Valor };
-                                            }
-                                            SetsVar.Add(Variable, auxValor);
 
+                                                var auxArray = item.Split('=');
+                                                var Variable = auxArray[0].Trim(new Char[] { ' ', '\t' });
+                                                var Valor = auxArray[1].Trim(new Char[] { ' ', '\t' });
+                                                string[] auxValor;
+                                                if (Valor.Contains("+"))
+                                                {
+                                                    auxValor = Valor.Split('+');
+                                                }
+                                                else
+                                                {
+                                                    auxValor = new string[] { Valor };
+                                                }
+                                                SetsVar.Add(Variable, auxValor);
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (item != "")
+                                            {
+
+                                                var auxArray = item.Split('=');
+                                                var Variable = auxArray[0].Trim(new Char[] { ' ', '\t' });
+                                                var Valor = auxArray[1].Trim(new Char[] { ' ', '\t' });
+                                                string[] auxValor;
+                                                if (Valor.Contains("+"))
+                                                {
+                                                    auxValor = Valor.Split('+');
+                                                }
+                                                else
+                                                {
+                                                    auxValor = new string[] { Valor };
+                                                }
+                                                SetsVar.Add(Variable, auxValor);
+
+                                            }
                                         }
                                     }
                                 }
