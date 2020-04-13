@@ -10,10 +10,17 @@ namespace ProyectoLenguajes
     class ExpressionTree
     {
         Dictionary<string, int> Precedencias = new Dictionary<string, int>();
+        Dictionary<List<int>, List<TransicionClass>> TablaDeTransiciones = new Dictionary<List<int>, List<TransicionClass>>();
+        Queue<string> ToDoTransicion = new Queue<string>();        
+        List<string> TransicionPresente = new List<string>();
+        List<string> Simbolos = new List<string>();
         string Recorrido = "";
         string operador, oper;
         int posicionAux = 1;
-        public string FirstStep(string RE)
+        List<Follow> TablaDeFollows = new List<Follow>();
+        bool outRecursive = true;
+        Nodo<string> aux;
+        public Nodo<string> FirstStep(string RE)
         {
             char[] tokens = RE.ToCharArray();            
             Precedencias.Add("*", 3);
@@ -294,16 +301,324 @@ namespace ProyectoLenguajes
                 }
             }
             //Recorrer Arbol
-            FirstLastLeafs(S.Peek());
-            RecorridoInorder(S.Peek());
+            FirstLastLeafs(S.Peek());           
+            LlenarTablaConSimbolos(S.Peek());
+            HacerFollows(S.Peek());
+            TablaDeTransicionesDo(S.Peek());
 
 
 
-
-            return Recorrido;
+            return S.Peek();
         }
 
-        public void FirstLastLeafs(Nodo<string> nodo)
+        public List<Follow> GetFollows()
+        {
+            return TablaDeFollows;
+        }
+        public List<string> GetSimbols()
+        {
+            return Simbolos;
+        }
+        public Dictionary<List<int>, List<TransicionClass>> Tabla()
+        {
+            return TablaDeTransiciones;
+        }
+        private void TablaDeTransicionesDo(Nodo<string> nodo)
+        {
+            List<TransicionClass> transicionClasses = new List<TransicionClass>();
+            List<int> Transicion = new List<int>();           
+            
+           
+
+            foreach (var item in TablaDeFollows)
+            {
+                if (!Simbolos.Contains(item.Valor))
+                {
+                    Simbolos.Add(item.Valor);
+                }
+            }
+
+            Transicion = nodo.First;          
+                
+
+            foreach (var simb in Simbolos)
+            {
+                List<int> auxis = new List<int>();
+                foreach (var item in Transicion)
+                {
+                    outRecursive = true;
+                    EncontrarPosicion(item, nodo);
+                    if (aux.Valor==simb)
+                    {
+                        var Follow = TablaDeFollows.Find(x => x.Posicion == item);
+                        var newList = auxis.Union(Follow.FollowValues);
+                        auxis = newList.ToList();
+                    }
+                }
+                if (auxis.Count!=0)
+                {
+                    auxis.Sort();
+                    TransicionClass newCell = new TransicionClass();
+                    newCell.Simbolo = simb;
+                    string Tran = "";
+                    foreach (var item in auxis)
+                    {
+                        Tran += item.ToString();
+                        Tran += ",";
+                    }
+
+                    if (Tran.EndsWith(","))
+                    {
+                        Tran = Tran.TrimEnd(',');
+                    }
+                    newCell.Transicion = Tran;
+
+                    transicionClasses.Add(newCell);
+                }
+                else
+                {
+                    string Tran = "-----";
+                    TransicionClass newCell = new TransicionClass();
+                    newCell.Simbolo = simb;
+                    newCell.Transicion = Tran;
+                    transicionClasses.Add(newCell);
+                }
+
+
+            }
+            TablaDeTransiciones.Add(Transicion,transicionClasses);
+
+            if (TablaDeTransiciones.Count==1)
+            {
+                string tran = "";
+                foreach (var item in Transicion)
+                {                    
+                        tran += item.ToString();
+                        tran += ",";                   
+
+                }
+                if (tran.EndsWith(","))
+                {
+                    tran = tran.TrimEnd(',');
+                }
+
+                var ValuesDic = TablaDeTransiciones[Transicion];
+
+                foreach (var item in ValuesDic)
+                {
+                    if (!item.Transicion.Equals(tran)&&item.Transicion.CompareTo("-----")!=0)
+                    {
+                        if (!ToDoTransicion.Contains(item.Transicion))
+                        {
+                            ToDoTransicion.Enqueue(item.Transicion);
+                            TransicionPresente.Add(item.Transicion);
+                        }
+                    }
+                    
+                }
+
+            }
+            while (ToDoTransicion.Count!=0)
+            {                
+                HacerNuevasTransiciones(nodo, ToDoTransicion.Dequeue());               
+            }
+                
+            
+
+
+
+        }
+        
+        private void HacerNuevasTransiciones(Nodo<string> nodo, string item)
+        {
+            List<TransicionClass> transicionClasses = new List<TransicionClass>();
+            List<string> auxTran = new List<string>();
+            Queue<string> auxTransicionesTodo = ToDoTransicion;            
+                var trans  =  item.Split(',');
+                List<int> Transicion = new List<int>();
+                foreach (var character in trans)
+                {
+                    Transicion.Add(Convert.ToInt32(character));
+                }
+                foreach (var simb in Simbolos)
+                {
+                    List<int> auxis = new List<int>();
+                    foreach (var tran in Transicion)
+                    {
+                        outRecursive = true;
+                        EncontrarPosicion(tran, nodo);
+                        if (aux.Valor == simb)
+                        {
+                            var Follow = TablaDeFollows.Find(x => x.Posicion == tran);
+                            var newList = auxis.Union(Follow.FollowValues);
+                            auxis = newList.ToList();
+                        }
+                    }
+                    if (auxis.Count != 0)
+                    {
+                        auxis.Sort();
+                        TransicionClass newCell = new TransicionClass();
+                        newCell.Simbolo = simb;
+                        string Tran = "";
+                        foreach (var TransicionAuxis in auxis)
+                        {
+                            Tran += TransicionAuxis.ToString();
+                            Tran += ",";
+                        }
+
+                        if (Tran.EndsWith(","))
+                        {
+                            Tran = Tran.TrimEnd(',');
+                        }
+                        newCell.Transicion = Tran;
+                        auxTran.Add(Tran);
+                        transicionClasses.Add(newCell);
+                    }
+                    else
+                    {
+                        string Tran = "-----";
+                        TransicionClass newCell = new TransicionClass();
+                        newCell.Simbolo = simb;
+                        newCell.Transicion = Tran;
+                        transicionClasses.Add(newCell);
+                    }
+                    
+                }
+                TablaDeTransiciones.Add(Transicion, transicionClasses);
+                foreach (var newTran in auxTran)
+                {
+                    if (!TransicionPresente.Contains(newTran))
+                    {
+                        TransicionPresente.Add(newTran);
+                        ToDoTransicion.Enqueue(newTran);
+                    }
+                    
+                }                
+            
+        }
+            
+
+       
+
+        private void EncontrarPosicion(int PosicionDeseada,Nodo<string> Raiz)
+        {
+            if (Raiz.Izquierda!=null)
+            {
+                EncontrarPosicion(PosicionDeseada, Raiz.Izquierda);
+            }
+            if (Raiz.Derecha!=null)
+            {
+                EncontrarPosicion(PosicionDeseada, Raiz.Derecha);
+            }
+            
+            if (Raiz.Posicion==PosicionDeseada&&outRecursive)
+            {
+                outRecursive = false;
+                aux = Raiz;                              
+            }           
+            
+        }
+
+        private void LlenarTablaConSimbolos(Nodo<string>  nodo)
+        {
+            if (nodo.Izquierda != null)
+            {
+                LlenarTablaConSimbolos(nodo.Izquierda);
+
+            }
+            if (nodo.Derecha != null)
+            {
+                LlenarTablaConSimbolos(nodo.Derecha);
+            }
+            if (nodo.Derecha == null && nodo.Izquierda == null)
+            {
+                Follow auxFollow = new Follow();
+                auxFollow.Posicion = nodo.Posicion;
+                auxFollow.Valor = nodo.Valor;
+                TablaDeFollows.Add(auxFollow);
+            }
+        }
+
+        private void HacerFollows(Nodo<string> nodo)
+        {
+            if (nodo.Izquierda != null)
+            {
+                HacerFollows(nodo.Izquierda);
+
+            }
+            if (nodo.Derecha != null)
+            {
+                HacerFollows(nodo.Derecha);
+            }
+            if (nodo.Derecha == null && nodo.Izquierda == null)
+            {
+               
+            }
+            else
+            {
+                switch (nodo.Valor)
+                {
+                    case "*":
+                        foreach (int item in nodo.Izquierda.Last)
+                        {
+                            foreach (Follow obj in TablaDeFollows)
+                            {
+                                if (obj.Posicion == item)
+                                {
+                                    obj.FollowValues = obj.FollowValues.Union(nodo.Izquierda.Last).ToList();
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case "+":
+                        foreach (int item in nodo.Izquierda.Last)
+                        {
+                            foreach (Follow obj in TablaDeFollows)
+                            {
+                                if (obj.Posicion == item)
+                                {
+                                    obj.FollowValues = obj.FollowValues.Union(nodo.Izquierda.Last).ToList();
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case "?":
+                        foreach (int item in nodo.Izquierda.Last)
+                        {
+                            foreach (Follow obj in TablaDeFollows)
+                            {
+                                if (obj.Posicion == item)
+                                {
+                                    obj.FollowValues = obj.FollowValues.Union(nodo.Izquierda.Last).ToList();
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case ".":
+                        foreach (int item in nodo.Izquierda.Last)
+                        {
+                            foreach (Follow obj in TablaDeFollows)
+                            {
+                                if (obj.Posicion == item)
+                                {
+                                    obj.FollowValues = obj.FollowValues.Union(nodo.Derecha.First).ToList();
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case "|":                        
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void FirstLastLeafs(Nodo<string> nodo)//Recorrido PostOrder para poder ingresar los first y last
         {
             if (nodo.Izquierda != null)
             {
@@ -396,7 +711,7 @@ namespace ProyectoLenguajes
 
 
 
-        public void  RecorridoInorder(Nodo<string> nodo)
+        private void  RecorridoInorder(Nodo<string> nodo)
         {
             if (nodo.Izquierda != null)
             {
@@ -407,8 +722,7 @@ namespace ProyectoLenguajes
             if (nodo.Derecha != null)
             {
                 RecorridoInorder(nodo.Derecha);
-            }
-            
+            }           
 
         }
 
