@@ -133,7 +133,7 @@ namespace ProyectoLenguajes
                         aux.Izquierda = popped;
                         S.Push(aux);
                     }
-                    if (i < tokens.Count() - 2 && (tokens[i + 1].CompareTo('|') != 0 && tokens[i + 1].CompareTo(')') != 0 && tokens[i + 1].CompareTo(']') != 0))//Concatenar el siguiente token si no es fin de parentesis o corchete o un simbolo
+                    if (i < tokens.Count() - 2 && (tokens[i + 1].CompareTo('|') != 0 && tokens[i + 1].CompareTo(')') != 0 && tokens[i + 1].CompareTo(']') != 0 && tokens[i + 1].CompareTo(' ') != 0))//Concatenar el siguiente token si no es fin de parentesis o corchete o un simbolo
                     {
                         tokens[i] = '.';
                         i--;
@@ -218,6 +218,11 @@ namespace ProyectoLenguajes
                         i--;
                     }
                     else if (i < tokens.Count() - 2 && tokens[i +1].CompareTo('\'') == 0 && Char.IsLetter(tokens[i - 1]))
+                    {
+                        tokens[i] = '.';
+                        i--;
+                    }
+                    else if (i < tokens.Count() - 2 && tokens[i + 1].CompareTo('\'') == 0 && Precedencias.ContainsKey(tokens[i - 1].ToString()))
                     {
                         tokens[i] = '.';
                         i--;

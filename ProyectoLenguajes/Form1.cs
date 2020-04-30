@@ -223,12 +223,31 @@ namespace ProyectoLenguajes
                                     }
                                     auxString = "(" + auxString + ")#";
                                     ExpressionTree tokensExpression = new ExpressionTree();
-                                    var TokensTreeWithFirstAndLast = tokensExpression.FirstStep(auxString);
-                                    FillGridViewRecursive(TokensTreeWithFirstAndLast);
+                                    var TokensTreeWithFirstAndLast = tokensExpression.FirstStep(auxString);                                    
+                                    var asd = tokensExpression.GetSimbols();
                                     var TablaFollows = tokensExpression.GetFollows();
+                                    var TablaTransiciones = tokensExpression.Tabla();
+                                    foreach (var item in asd)
+                                    {
+                                        if (!item.Contains("'")&&item!="#")
+                                        {
+                                            if (!SetsVar.ContainsKey(item))
+                                            {
+                                                mensaje = "Gramatica de los TOKENS  Erronea";
+                                                required = false;
+                                                break;
+                                            }
+                                        }
+                                    }
                                     FillGridFollows(TablaFollows);
-                                    var TablaTransiciones = tokensExpression.Tabla();                                    
-                                    FillGridViewTablaTransiciones(tokensExpression.GetSimbols(),TablaTransiciones);
+                                    FillGridViewRecursive(TokensTreeWithFirstAndLast);
+                                    FillGridViewTablaTransiciones(tokensExpression.GetSimbols(), TablaTransiciones);
+
+                                    CreateProgram ass = new CreateProgram();
+                                    ass.CrearPrograma(TablaTransiciones);
+
+
+
                                 }
                                 else
                                 {
