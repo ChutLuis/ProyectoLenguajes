@@ -244,7 +244,7 @@ namespace ProyectoLenguajes
                                     FillGridViewTablaTransiciones(tokensExpression.GetSimbols(), TablaTransiciones);
 
                                     CreateProgram ass = new CreateProgram();
-                                    ass.CrearPrograma(TablaTransiciones);
+                                    ass.CrearPrograma(TablaTransiciones,SetsVar);
 
 
 
