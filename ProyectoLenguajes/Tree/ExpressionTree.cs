@@ -222,7 +222,7 @@ namespace ProyectoLenguajes
                         tokens[i] = '.';
                         i--;
                     }
-                    else if (i < tokens.Count() - 2 && tokens[i + 1].CompareTo('\'') == 0 && Precedencias.ContainsKey(tokens[i - 1].ToString()))
+                    else if (i < tokens.Count() - 2 && tokens[i + 1].CompareTo('\'') == 0 && Precedencias.ContainsKey(tokens[i - 1].ToString())&&tokens[i-1].CompareTo('|')!=0)
                     {
                         tokens[i] = '.';
                         i--;
