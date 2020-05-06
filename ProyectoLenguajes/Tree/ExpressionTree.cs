@@ -50,12 +50,7 @@ namespace ProyectoLenguajes
                             S.Push(temp);
                         }
                     }
-                    T.Pop();
-                    if (i < tokens.Count() - 2 && !Precedencias.ContainsKey(tokens[i + 1].ToString()) && tokens[i + 1] != ')')//Concatenar si el siguiente no es operacion o cerradura
-                    {
-                        tokens[i] = '.';
-                        i--;
-                    }
+                    T.Pop();                    
                 }
                 else if (tokens[i].Equals('['))
                 {

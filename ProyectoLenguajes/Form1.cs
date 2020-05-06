@@ -165,7 +165,7 @@ namespace ProyectoLenguajes
                                             {
                                                 if (lmao[i] == ')')
                                                 {
-                                                    salida = true;
+                                                    salida = false;
                                                     required = true;
                                                 }
                                                 else if (aux2.Contains("TOKEN"))
@@ -209,6 +209,10 @@ namespace ProyectoLenguajes
                                                     if (Valor.Contains("{ RESERVADAS() }"))
                                                     {
                                                         Valor = Valor.Replace("{ RESERVADAS() }", "");
+                                                    }
+                                                    else if (Valor.Contains("{ VALUES() }"))
+                                                    {
+                                                        Valor = Valor.Replace("{ VALUES() }", "");
                                                     }
 
                                                     TokensDic.Add(Valor, auxArray[0]);

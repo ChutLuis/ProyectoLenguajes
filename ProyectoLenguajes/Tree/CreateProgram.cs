@@ -363,6 +363,11 @@ namespace ProyectoLenguajes.Tree
                         System.Environment.CurrentDirectory,
                         sourceFile.Name.Replace(".", "_"));
 
+                    if (File.Exists(exeName))
+                    {
+                        File.Delete(exeName);
+                    }
+
                     CompilerParameters cp = new CompilerParameters();
 
                     // Generate an executable instead of
