@@ -1,0 +1,11 @@
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\bin\Debug\Proyecto\bin\Debug\netcoreapp3.1\Proyecto.exe
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\bin\Debug\Proyecto\bin\Debug\netcoreapp3.1\Proyecto.deps.json
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\bin\Debug\Proyecto\bin\Debug\netcoreapp3.1\Proyecto.runtimeconfig.json
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\bin\Debug\Proyecto\bin\Debug\netcoreapp3.1\Proyecto.runtimeconfig.dev.json
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\bin\Debug\Proyecto\bin\Debug\netcoreapp3.1\Proyecto.dll
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\bin\Debug\Proyecto\bin\Debug\netcoreapp3.1\Proyecto.pdb
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\bin\Debug\Proyecto\obj\Debug\netcoreapp3.1\Proyecto.csprojAssemblyReference.cache
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\bin\Debug\Proyecto\obj\Debug\netcoreapp3.1\Proyecto.AssemblyInfoInputs.cache
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\bin\Debug\Proyecto\obj\Debug\netcoreapp3.1\Proyecto.AssemblyInfo.cs
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\bin\Debug\Proyecto\obj\Debug\netcoreapp3.1\Proyecto.dll
+C:\Users\Luis\Desktop\Lenguajes\ProyectoLenguajes\bin\Debug\Proyecto\obj\Debug\netcoreapp3.1\Proyecto.pdb

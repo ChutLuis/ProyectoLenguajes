@@ -35,7 +35,7 @@ namespace ProyectoLenguajes
             Regex Error = new Regex("([\r\n|\n|\t| ]*ERROR[ ]*[=][ ]*[0-9]+[\r\n|\n|\t| ]*)*");
 
 
-
+            Dictionary<string, string> TokensDic = new Dictionary<string, string>();
             Dictionary<string, int> Precedencias = new Dictionary<string, int>();
             Precedencias.Add("*", 3);
             Precedencias.Add("+", 3);
@@ -210,6 +210,8 @@ namespace ProyectoLenguajes
                                                     {
                                                         Valor = Valor.Replace("{ RESERVADAS() }", "");
                                                     }
+
+                                                    TokensDic.Add(Valor, auxArray[0]);
                                                     auxString += Valor;
                                                     auxString += "|";
                                                 }
@@ -221,6 +223,7 @@ namespace ProyectoLenguajes
                                         auxString = auxString.Remove(auxString.Length - 1);
                                         auxString = auxString.Trim(new Char[] { ' ', '\t' });
                                     }
+
                                     auxString = "(" + auxString + ")#";
                                     ExpressionTree tokensExpression = new ExpressionTree();
                                     var TokensTreeWithFirstAndLast = tokensExpression.FirstStep(auxString);                                    
@@ -239,12 +242,66 @@ namespace ProyectoLenguajes
                                             }
                                         }
                                     }
+
+                                    var Reservadas = Between(Texto, "ACTIONS", "ERROR");
+                                    string[] separadores = new string[] { "\r\n", "\n" };
+                                    string[] Lineas = Reservadas.Split(stringSeparators, StringSplitOptions.None);                                    
+                                    for (int i = 0; i < lines.Length; i++)
+                                    {
+                                        lines[i] = lines[i].Replace("\t", string.Empty);
+                                    }
+                                    Dictionary<string,string> ReservadasP = new Dictionary<string,string>();
+                                    foreach (var item in Lineas)
+                                    {
+                                        if (!item.Equals(""))
+                                        {
+                                            if (!item.Equals("{")&&!item.Equals("}"))
+                                            {
+                                                if (item.Contains("="))
+                                                {
+                                                    var auxSplit = item.Split('=');
+                                                    auxSplit[1] = auxSplit[1].Trim(new Char[] { ' ', '\t','\'' });                                                    
+                                                    ReservadasP.Add(auxSplit[1],auxSplit[0]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    Dictionary<string, string> TokensCompare = new Dictionary<string, string>();
+                                    foreach (var item in TokensDic)
+                                    {
+                                        string auxTokens = "";
+                                        var auxArray = item.Key.ToCharArray();
+                                        for (int i = 0; i < auxArray.Length; i++)
+                                        {
+                                            if (auxArray[i].Equals('\''))
+                                            {
+                                                if (auxArray[i+2].Equals('\''))
+                                                {
+                                                    if (auxArray[i + 1].CompareTo('"') == 0)
+                                                    {
+                                                        auxTokens += '\\';
+                                                    }
+                                                    auxTokens += auxArray[i + 1];
+                                                    i+=2;
+                                                    
+                                                }
+                                            }
+                                            else
+                                            {
+                                                auxTokens += auxArray[i];
+                                            }
+                                        }
+                                        TokensCompare.Add(auxTokens,item.Value);
+
+                                    }
+
+                                    
                                     FillGridFollows(TablaFollows);
                                     FillGridViewRecursive(TokensTreeWithFirstAndLast);
                                     FillGridViewTablaTransiciones(tokensExpression.GetSimbols(), TablaTransiciones);
 
-                                    CreateProgram ass = new CreateProgram();
-                                    ass.CrearPrograma(TablaTransiciones,SetsVar);
+                                    CreateProgram ejecutable = new CreateProgram();
+                                    ejecutable.CrearPrograma(TablaTransiciones,SetsVar,TablaFollows, ReservadasP,TokensCompare);
 
 
 
